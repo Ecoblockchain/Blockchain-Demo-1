@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Markuplab.Seratio.Blockchain.DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AssestsRequests">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Assest" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="HasRejected" Type="bit" Nullable="false" />
+          <Property Name="HasApproved" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="StatusChangedOn" Type="datetime" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Requests">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SenderID" Type="int" Nullable="false" />
+          <Property Name="Recipient" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HasDownloaded" Type="bit" Nullable="false" />
+          <Property Name="HasRejected" Type="bit" Nullable="false" />
+          <Property Name="SentOn" Type="datetime" Nullable="false" />
+          <Property Name="RespondedOn" Type="datetime" />
+          <Property Name="IsDataActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AuthString" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="BCHash" Type="nvarchar" MaxLength="500" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PV" Type="decimal" Precision="18" Scale="1" />
+          <Property Name="PVUpdaterStatus" Type="bit" />
+          <Property Name="Criteria" Type="nvarchar" MaxLength="50" />
+          <Property Name="CriteriaValue" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="IsSearchable" Type="bit" Nullable="false" />
+          <Property Name="IsSuperAdmin" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="IsDataActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AssestsRequests_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="AssestsRequests" Type="Self.AssestsRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AssestsRequests">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Sender">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MarkuplabSeratioBlockchainDataModelStoreContainer">
+          <EntitySet Name="AssestsRequests" EntityType="Self.AssestsRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AssestsRequests_Users" Association="Self.FK_AssestsRequests_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AssestsRequests" EntitySet="AssestsRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Sender" Association="Self.FK_Requests_Sender">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Markuplab.Seratio.Blockchain.DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Requests" EntityType="Markuplab.Seratio.Blockchain.DataModel.Request" />
+          <EntitySet Name="AssestsRequests" EntityType="Markuplab.Seratio.Blockchain.DataModel.AssestsRequest" />
+          <EntitySet Name="Users" EntityType="Markuplab.Seratio.Blockchain.DataModel.User" />
+          <AssociationSet Name="FK_AssestsRequests_Users" Association="Markuplab.Seratio.Blockchain.DataModel.FK_AssestsRequests_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AssestsRequest" EntitySet="AssestsRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Sender" Association="Markuplab.Seratio.Blockchain.DataModel.FK_Requests_Sender">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="Int32" Nullable="false" />
+          <Property Name="Recipient" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HasDownloaded" Type="Boolean" Nullable="false" />
+          <Property Name="HasRejected" Type="Boolean" Nullable="false" />
+          <Property Name="SentOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RespondedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDataActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Markuplab.Seratio.Blockchain.DataModel.FK_Requests_Sender" FromRole="Request" ToRole="User" />
+        </EntityType>
+        <EntityType Name="AssestsRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Assest" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="HasRejected" Type="Boolean" Nullable="false" />
+          <Property Name="HasApproved" Type="Boolean" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="StatusChangedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Markuplab.Seratio.Blockchain.DataModel.FK_AssestsRequests_Users" FromRole="AssestsRequest" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AuthString" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BCHash" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PV" Type="Decimal" Precision="18" Scale="1" />
+          <Property Name="PVUpdaterStatus" Type="Boolean" />
+          <Property Name="Criteria" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CriteriaValue" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="IsSearchable" Type="Boolean" Nullable="false" />
+          <Property Name="IsSuperAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDataActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AssestsRequests" Relationship="Markuplab.Seratio.Blockchain.DataModel.FK_AssestsRequests_Users" FromRole="User" ToRole="AssestsRequest" />
+          <NavigationProperty Name="Requests" Relationship="Markuplab.Seratio.Blockchain.DataModel.FK_Requests_Sender" FromRole="User" ToRole="Request" />
+        </EntityType>
+        <Association Name="FK_AssestsRequests_Users">
+          <End Type="Markuplab.Seratio.Blockchain.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Markuplab.Seratio.Blockchain.DataModel.AssestsRequest" Role="AssestsRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AssestsRequest">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Sender">
+          <End Type="Markuplab.Seratio.Blockchain.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Markuplab.Seratio.Blockchain.DataModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MarkuplabSeratioBlockchainDataModelStoreContainer" CdmEntityContainer="DatabaseEntities">
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="Markuplab.Seratio.Blockchain.DataModel.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="IsDataActive" ColumnName="IsDataActive" />
+                <ScalarProperty Name="RespondedOn" ColumnName="RespondedOn" />
+                <ScalarProperty Name="SentOn" ColumnName="SentOn" />
+                <ScalarProperty Name="HasRejected" ColumnName="HasRejected" />
+                <ScalarProperty Name="HasDownloaded" ColumnName="HasDownloaded" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Recipient" ColumnName="Recipient" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssestsRequests">
+            <EntityTypeMapping TypeName="Markuplab.Seratio.Blockchain.DataModel.AssestsRequest">
+              <MappingFragment StoreEntitySet="AssestsRequests">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="StatusChangedOn" ColumnName="StatusChangedOn" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="HasApproved" ColumnName="HasApproved" />
+                <ScalarProperty Name="HasRejected" ColumnName="HasRejected" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Assest" ColumnName="Assest" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Markuplab.Seratio.Blockchain.DataModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IsDataActive" ColumnName="IsDataActive" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="LastUpdatedOn" ColumnName="LastUpdatedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="IsSuperAdmin" ColumnName="IsSuperAdmin" />
+                <ScalarProperty Name="IsSearchable" ColumnName="IsSearchable" />
+                <ScalarProperty Name="CriteriaValue" ColumnName="CriteriaValue" />
+                <ScalarProperty Name="Criteria" ColumnName="Criteria" />
+                <ScalarProperty Name="PVUpdaterStatus" ColumnName="PVUpdaterStatus" />
+                <ScalarProperty Name="PV" ColumnName="PV" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="BCHash" ColumnName="BCHash" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="AuthString" ColumnName="AuthString" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

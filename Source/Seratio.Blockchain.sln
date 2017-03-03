@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MultiChain", "MultiChain", "{7127B0C3-94E2-468A-A1C1-A114545C7457}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiChainLib", "MultiChain\MultiChainLib\MultiChainLib.csproj", "{F7C35562-FDD5-4124-86DF-B8BE94CF816D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockChainWebApplication", "MultiChain\BlockChainWebApplication\BlockChainWebApplication.csproj", "{D6A48604-EF18-4C35-830A-0F95DC9076AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7C35562-FDD5-4124-86DF-B8BE94CF816D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C35562-FDD5-4124-86DF-B8BE94CF816D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C35562-FDD5-4124-86DF-B8BE94CF816D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C35562-FDD5-4124-86DF-B8BE94CF816D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A48604-EF18-4C35-830A-0F95DC9076AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A48604-EF18-4C35-830A-0F95DC9076AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A48604-EF18-4C35-830A-0F95DC9076AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A48604-EF18-4C35-830A-0F95DC9076AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F7C35562-FDD5-4124-86DF-B8BE94CF816D} = {7127B0C3-94E2-468A-A1C1-A114545C7457}
+		{D6A48604-EF18-4C35-830A-0F95DC9076AE} = {7127B0C3-94E2-468A-A1C1-A114545C7457}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://optimus:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MultiChain\\BlockChainWebApplication\\BlockChainWebApplication.csproj
+		SccProjectTopLevelParentUniqueName1 = Markuplab.Seratio.Blockchain.sln
+		SccProjectName1 = MultiChain/BlockChainWebApplication
+		SccLocalPath1 = MultiChain\\BlockChainWebApplication
+		SccProjectUniqueName2 = MultiChain\\MultiChainLib\\MultiChainLib.csproj
+		SccProjectTopLevelParentUniqueName2 = Markuplab.Seratio.Blockchain.sln
+		SccProjectName2 = MultiChain/MultiChainLib
+		SccLocalPath2 = MultiChain\\MultiChainLib
+	EndGlobalSection
+EndGlobal

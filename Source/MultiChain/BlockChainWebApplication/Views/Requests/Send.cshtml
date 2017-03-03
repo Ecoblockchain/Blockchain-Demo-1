@@ -1,0 +1,63 @@
+﻿@*@model BlockChainWebApplication.Models.Request*@
+
+@{
+    ViewBag.Title = "Send Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('Requests') });</script>
+
+}
+
+@section CSS{
+
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Send Request</span></h4>
+        </div>
+        <div class="heading-elements">
+            <div class="heading-btn-group">
+                <a class="btn btn-link btn-float has-text" href="/requests/index"><i class="icon-bag"></i><span>All Requests</span></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="content">
+    <form method="post" class="form-horizontal" action="" enctype="multipart/form-data" autocomplete="off">
+        <div class="panel panel-flat">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="receiver" id="receiver" class="receiver" />
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label"><span class="text-danger"></span>  Recipient: </label>
+                            <div class="col-lg-7">
+                                <input name="recipient" id="recipient" type="text" placeholder="Please enter the Recipient" class="form-control recipient" data-val="true" data-val-required="Please enter a valid Recipient." required="required">
+                                @Html.ValidationMessage("recipient", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Message: </label>
+                            <div class="col-lg-7">
+                                <textarea name="message" type="" placeholder="Please enter the Message" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-right">
+                    <a href="/requests/Send" class="btn btn-default">Reset<i class="icon-reload-alt position-right"></i> </a>
+                    <button type="submit" class="btn btn-primary">Submit <i class="icon-arrow-right14 position-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

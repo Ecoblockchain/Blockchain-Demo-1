@@ -1,0 +1,68 @@
+﻿@model List<AddressTransactionsResponse>
+
+@{
+    ViewBag.Title = "Wallet History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('My Wallet') });</script>
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Wallet History</span></h4>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="panel panel-flat">
+        <table class="table data-table-local table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th style="width:100px;">Time</th>
+                    <th>Asset</th>
+                    <th>Quantity</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Transaction Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+
+                    foreach (AddressTransactionsResponse _transaction in Model.Where(t => t.balance.assets != null).OrderBy(m => m.time))
+                    {
+                        var _asset = _transaction.balance.assets.FirstOrDefault();
+
+                        if (_asset != null)
+                        {
+                            <tr>
+
+                                <td>@( new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(_transaction.time).ToLocalTime())</td>
+                                <td>@_asset.name</td>
+                                @{
+                                    if (_asset.qty > 0)
+                                    {
+                                        <td><span class='label label-success'>@_asset.qty</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class='label label-danger'>@_asset.qty</span></td>
+                                    }
+                                }
+                                <td>@(_asset.qty > 0 ? AppManager.GetNameByBCHash(_transaction.addresses.FirstOrDefault()) : AppManager.GetNameByBCHash(_transaction.myaddresses.FirstOrDefault()))</td>
+                                <td>@(_asset.qty > 0 ? AppManager.GetNameByBCHash(_transaction.myaddresses.FirstOrDefault()) : AppManager.GetNameByBCHash(_transaction.addresses.FirstOrDefault()))</td>
+                                <td>@_transaction.comment</td>
+                            </tr>
+
+                                            i++;
+                                        }
+                                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

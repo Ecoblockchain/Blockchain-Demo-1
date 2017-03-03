@@ -1,0 +1,211 @@
+﻿@model User
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('Dashboard') });</script>
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Dashboard</span></h4>
+        </div>
+        @{
+            foreach (AssetBalanceResponse _asset in ViewBag.Response)
+            {
+                if (_asset.Name == "Seratio Coin")
+                {
+                    <div class="heading-elements">
+                        <div class="panel panel-body bg-primary text-center" style="margin-top: -12px; padding:10px;">
+                            <h6 class="no-margin text-semibold">
+                                <i class="icon-piggy-bank"></i>
+                                @_asset.Qty Seratio Coin(s) in your Wallet
+                            </h6>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+    </div>
+</div>
+<div class="content">
+    <p style="text-align:center;">
+        @{
+            if (!string.IsNullOrEmpty(Model.Criteria) && Model.CriteriaValue != null)
+            {
+                string _criteriaMessage = null;
+
+                switch (Model.Criteria)
+                {
+                    case ">=":
+                        _criteriaMessage = "Personal Value greater than or equal to " + Model.CriteriaValue;
+                        break;
+
+                    case "<=":
+                        _criteriaMessage = "Personal Value less than or equal to " + Model.CriteriaValue;
+                        break;
+
+                    case "=":
+                        _criteriaMessage = "Personal Value equal to " + Model.CriteriaValue;
+                        break;
+                    default:
+                        _criteriaMessage = "No Criteria";
+                        break;
+
+                }
+
+                @Html.Raw("Only people with " + _criteriaMessage + " can send you Assets. <a href='/default/edit/" + AppManager.User.ID + "'>Click here</a> to change it now.")
+            }
+            else
+            {
+                @Html.Raw("You haven't set a Criteria based on their PV Score for who can send you Assets. <a href='/default/edit/" + AppManager.User.ID + "'>Click here</a> to set it now.")
+            }
+        }
+    </p>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">Recent Transactions</h5>
+            <div class="heading-elements">
+                <ul class="icons-list">
+                    <li><a data-action="collapse"></a></li>
+                </ul>
+            </div>
+            <a class="heading-elements-toggle"><i class="icon-more"></i></a>
+            <a class="heading-elements-toggle"><i class="icon-menu"></i></a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Asset</th>
+                        <th>Quantity</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Transaction Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (AddressTransactionsResponse _transaction in (List<AddressTransactionsResponse>)ViewBag.RecentTransactions)
+                        {
+                            var _asset = _transaction.balance.assets.FirstOrDefault();
+                            var _metaData = AppManager.GetTransactionMetaData(_transaction.comment);
+
+                            if (_asset != null)
+                            {
+                                <tr>
+
+                                    <td>@( new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(_transaction.time).ToLocalTime())</td>
+                                    <td>@_asset.name</td>
+                                    @{
+                                        if (_asset.qty > 0)
+                                        {
+                                            <td><span class='label label-success'>@_asset.qty</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class='label label-danger'>@_asset.qty</span></td>
+                                        }
+                                    }
+                                    <td>@(_asset.qty > 0 ? AppManager.GetNameByBCHash(_transaction.addresses.FirstOrDefault()) : AppManager.GetNameByBCHash(_transaction.myaddresses.FirstOrDefault()))</td>
+                                    <td>@(_asset.qty > 0 ? AppManager.GetNameByBCHash(_transaction.myaddresses.FirstOrDefault()) : AppManager.GetNameByBCHash(_transaction.addresses.FirstOrDefault()))</td>
+                                    <td>@(_metaData != null ? ("Gold Price per gram in GBP " + _metaData.GoldPricePerGram + ". Value of Transaction is " + _metaData.Value + " GBP") : _transaction.comment)</td>
+                                </tr>
+                                            }
+                                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @{
+        if (((List<Request>)ViewBag.Requests).Any())
+        {
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h5 class="panel-title">Recent Requests</h5>
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                        </ul>
+                    </div>
+                    <a class="heading-elements-toggle"><i class="icon-more"></i></a>
+                    <a class="heading-elements-toggle"><i class="icon-menu"></i></a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Sender
+                                </th>
+                                <th>
+                                    Receiver
+                                </th>
+
+                                <th>
+                                    Sent On
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Replied On
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (Request _request in (List<Request>)ViewBag.Requests)
+                                {
+
+                                    DatabaseEntities db = DatabaseContextManager.Current;
+                                    var _user = db.Users.FirstOrDefault(u => u.IsDataActive && (u.Email == _request.Recipient || u.NickName == _request.Recipient));
+
+                                    <tr>
+                                        <td>@(string.IsNullOrEmpty(_request.User.NickName) ? "@" + _request.User.Username : _request.User.NickName)</td>
+
+                                        @{
+                                            if (_user != null)
+                                            {
+                                                <td>@(string.IsNullOrEmpty(_user.NickName) ? "@" + _user.Username : _user.NickName)</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        }
+
+                                        <td>@_request.SentOn</td>
+                                        <td>
+                                            @{
+                                                switch (_request.Status)
+                                                {
+                                                    case "Pending":
+                                                        <span class='label label-primary'>Pending</span>
+                                                        break;
+                                                    case "Rejected":
+                                                        <span class='label label-danger'>Rejected</span>
+                                                        break;
+                                                    case "Approved":
+                                                        <span class='label label-success'>Approved</span>
+                                                        break;
+                                                }
+                                            }
+                                        </td>
+                                        <td>@_request.RespondedOn</td>
+                                    </tr>
+                                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                                                }
+    }
+</div>

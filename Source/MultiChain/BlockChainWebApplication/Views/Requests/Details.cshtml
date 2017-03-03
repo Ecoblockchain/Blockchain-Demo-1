@@ -1,0 +1,106 @@
+﻿@model BlockChainWebApplication.Models.Request
+
+@{
+    ViewBag.Title = "Request Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('Requests') });</script>
+}
+
+@section CSS{
+
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Request Details</span></h4>
+        </div>
+        <div class="heading-elements">
+            <div class="heading-btn-group">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-flat">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="main">
+                                <table class="table table-borderless table-xs content-group-sm">
+                                    <tbody>
+
+
+                                        <tr>
+                                            <td class="col-lg-2">Sender</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @(Model.User.NickName != null ? Model.User.NickName : "@" + Model.User.Username)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-2">Receiver</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @ViewBag.receiver </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-2">@Html.DisplayNameFor(model => model.Message)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @(Html.Raw(Model.Message != null ? Model.Message.Replace("\r\n", "</br>") : ""))</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-2">@Html.DisplayNameFor(model => model.Status)</td>
+                                            <td class="col-lg-1">:</td>
+                                            @{
+
+                                                switch (Model.Status)
+                                                {
+                                                    case "Pending":
+                                                        <td><span class="label label-primary">Pending</span></td>
+                                                        break;
+                                                    case "Rejected":
+                                                        <td><span class="label label-danger">Rejected</span></td>
+                                                        break;
+                                                    case "Approved":
+                                                        <td><span class="label label-success">Approved</span></td>
+                                                        break;
+                                                }
+                                            }
+
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-2">Sent On</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.SentOn</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-2">Responded On</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.RespondedOn</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @{
+                        if (Model.Recipient.ToLower() == AppManager.User.Email.ToLower() && Model.Status == "Pending")
+                        {
+                            <hr />
+                            <div class="text-center">
+                                <a href="/requests/approve/@Model.ID" class="btn btn-primary confirm mr5" data-confirm="Are you sure you want to approve this Request?">Approve<i class="icon-shield-check position-right"></i> </a>
+                                <a href="/requests/reject/@Model.ID" class="btn btn-danger confirm mr5" data-confirm="Are you sure you want to reject this Request?">Reject<i class="icon-cancel-circle2 position-right"></i> </a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,24 @@
+﻿@model BlockchainInfoResponse
+
+@{
+    ViewBag.Title = "Blockchain Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('Info') });</script>
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Blockchain Details</span></h4>
+        </div>
+    </div>
+
+</div>
+<div class="content">
+    <div class="panel panel-flat">
+        <pre><code class="language-json">@(AppManager.FormatJson(Model))</code></pre>
+    </div>
+</div>

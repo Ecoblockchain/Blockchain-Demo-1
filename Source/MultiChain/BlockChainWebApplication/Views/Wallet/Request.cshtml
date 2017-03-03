@@ -1,0 +1,51 @@
+﻿@model Payment
+@{
+    ViewBag.Title = "Request Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('My Wallet') });</script>
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Requst Asset</span></h4>
+        </div>
+    </div>
+
+</div>
+<div class="content">
+    <form method="post" class="form-horizontal" action="" enctype="multipart/form-data" autocomplete="off">
+        <div class="panel panel-flat">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+        
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Asset: </label>
+                            <div class="col-lg-7">
+                                <input type="text" value="Seratio Coin" readonly="readonly" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.Asset, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Quantity: </label>
+                            <div class="col-lg-7">
+                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @placeholder = "Please enter the Quantity", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="text-right">
+                        <a href="/wallet/request" class="btn btn-default">Cancel<i class="icon-reload-alt position-right"></i> </a>
+                        <button type="submit" class="btn btn-primary">Submit <i class="icon-arrow-right14 position-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

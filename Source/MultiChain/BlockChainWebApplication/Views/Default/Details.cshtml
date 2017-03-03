@@ -1,0 +1,124 @@
+﻿@model User
+
+@{
+    ViewBag.Title = "Profile Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('Users') });</script>
+    <script src="~/Assets/plugins/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+}
+
+@section CSS{
+    <link href="~/Assets/plugins/bootstrap-toggle/bootstrap-toggle.min.css" rel="stylesheet" />
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Profile Details</span></h4>
+        </div>
+        <div class="heading-elements">
+            <div class="heading-btn-group">
+                <a class="btn btn-link btn-float has-text" href="/default/edit/@Model.ID"><i class="icon-pencil7 text-primary"></i><span>Edit</span></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-flat">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="main">
+                                <table class="table table-borderless table-xs content-group-sm">
+                                    <tbody>
+
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.Username)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @("@" + Model.Username)</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.NickName)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.NickName</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.Email)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.Email</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.Gender)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td>@Model.Gender</td>
+                                        </tr>
+                                        @{
+                                            string _criteriaMessage = "";
+
+                                            switch (Model.Criteria)
+                                            {
+                                                case ">=":
+                                                    _criteriaMessage = "Personal Value greater than or equal to " + Model.CriteriaValue;
+                                                    break;
+
+                                                case "<=":
+                                                    _criteriaMessage = "Personal Value less than or equal to " + Model.CriteriaValue;
+                                                    break;
+
+                                                case "=":
+                                                    _criteriaMessage = "Personal Value equal to " + Model.CriteriaValue;
+                                                    break;
+                                                default:
+                                                    _criteriaMessage = "No Criteria";
+                                                    break;
+
+                                            }
+                                        }
+
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.Criteria)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td>@_criteriaMessage</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.Phone)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.Phone</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.IsSearchable)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td>@Html.EditorFor(model => model.IsSearchable, new { htmlAttributes = new { @class = "toggle-switch", @disabled = "disabled" } })</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.CreatedOn)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.CreatedOn</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-3">@Html.DisplayNameFor(model => model.LastUpdatedOn)</td>
+                                            <td class="col-lg-1">:</td>
+                                            <td> @Model.LastUpdatedOn</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

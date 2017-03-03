@@ -1,0 +1,68 @@
+﻿@model List<AssetResponse>
+
+@{
+    ViewBag.Title = "Assets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section JavaScript{
+    <script type="text/javascript">$(document).ready(function () { WebApp.Core.HighlightCurrentMenuItem('Assets') });</script>
+}
+
+<div class="page-header">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4><span class="text-semibold">Assets</span></h4>
+        </div>
+        <div class="heading-elements">
+            <div class="heading-btn-group">
+                <a class="btn btn-link btn-float has-text" href="/Assets/Issue"><i class="icon-googleplus5 text-primary"></i><span>Issue Asset</span></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="content">
+    <div class="panel panel-flat">
+        <table class="table data-table-local table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th style="width:100px;">Sl. No.</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Units</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+
+                    foreach (AssetResponse _asset in Model)
+                    {
+                        <tr>
+                            <td style="width:100px;">@i</td>
+                            <td>@_asset.Name</td>
+                            <td>@_asset.IssueQty</td>
+                            <td>@_asset.Units</td>
+                            <td>
+                                @{
+                                    if (_asset.Open)
+                                    {
+                                        <a class="btn btn-primary btn-xs" href="/Assets/Issue?asset_name=@_asset.Name"><i class="icon-plus3"></i> Issue more Qty of this Asset</a>
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+
+                                        i++;
+                                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
